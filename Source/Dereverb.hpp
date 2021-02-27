@@ -23,7 +23,7 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
-#include <JuceHeader.h>
+//#include <JuceHeader.h> // boris commented
 
 using namespace std;
 
@@ -32,7 +32,8 @@ public:
     
     void setAlpha(float dereverbPercent); // dereverbPercent == [0.f,100.f]
     void processBlock(float *fftChannelData, int numSamples);
-    void processBuffer(HeapBlock<dsp::Complex<float>> &frequencyDomainBuffer, int numSamples);
+	//void processBuffer(HeapBlock<dsp::Complex<float>> &frequencyDomainBuffer, int numSamples);
+	void processBuffer(float *frequencyDomainBuffer, int numSamples);
 
 private:
     

@@ -9,9 +9,11 @@
 
 #include "Dereverb.hpp"
 
+#include <limits>
+
 using namespace std;
 
-void Dereverb::processBuffer(HeapBlock<dsp::Complex<float>> &frequencyDomainBuffer, int numSamples){
+/*void Dereverb::processBuffer(HeapBlock<dsp::Complex<float>> &frequencyDomainBuffer, int numSamples){
     
     // frequencyDomain contains real and imaginary pairs as (real,imaginary
     for (int i = 0; i < numSamples; i++){
@@ -30,6 +32,23 @@ void Dereverb::processBuffer(HeapBlock<dsp::Complex<float>> &frequencyDomainBuff
         
     }
     
+}*/
+
+void Dereverb::processBuffer(float *frequencyDomainBuffer, int numSamples){
+	// frequencyDomain contains real and imaginary pairs as (real,imaginary
+	for (int i = 0; i < numSamples; i++){
+
+		// Take the magnitude squared of the FFT input
+		float real = frequencyDomainBuffer[i];
+		P = powf(abs(frequencyDomainBuffer[i]), 2);
+
+		// Calculate R1 and R2. 'setR1R2' method also updates the maskingGain
+		setR1R2(P, i);
+
+		// Apply masking gain to real and imaginary parts
+		frequencyDomainBuffer[i] = (real * maskingGain);
+
+	}
 }
 
 void Dereverb::processBlock(float *fftChannelData, int numSamples){
